@@ -3,81 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semantic Splatting</title>
+    <title>3D Semantic Splatting | Josh Hyde</title>
     <style>
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            line-height: 1.6; 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            padding: 40px 20px; 
-            background-color: #ffffff;
-            color: #1d1d1f; 
+        :root {
+            --accent-color: #0066cc;
+            --text-main: #1d1d1f;
+            --text-secondary: #86868b;
+            --bg-gray: #f5f5f7;
         }
-        header { text-align: center; margin-bottom: 60px; }
-        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1050px; 
+            margin: 0 auto; 
+            padding: 60px 20px; 
+            background-color: #ffffff;
+            color: var(--text-main); 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header { text-align: center; margin-bottom: 80px; }
         
-        /* Video Container */
+        .university-tag {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h1 { font-size: 3rem; font-weight: 700; margin-bottom: 15px; letter-spacing: -0.02em; }
+        
+        .header-sub { font-size: 1.25rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 30px; }
+
+        /* Professional Link Buttons */
+        .project-links { margin-bottom: 40px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            margin: 0 8px;
+            border-radius: 20px;
+            background: var(--bg-gray);
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .btn:hover { background: #e8e8ed; border-color: #d2d2d7; }
+        .btn-primary { background: var(--text-main); color: white; }
+        .btn-primary:hover { background: #000; }
+
+        /* Video Comparison Styling */
         .video-comparison { 
             display: flex; 
-            gap: 20px; 
+            gap: 24px; 
             justify-content: center;
-            align-items: flex-start;
-            margin-bottom: 30px;
+            margin-bottom: 50px;
         }
-        .video-item { flex: 1; min-width: 300px; }
+        .video-item { 
+            flex: 1; 
+            background: var(--bg-gray);
+            padding: 12px;
+            border-radius: 20px;
+        }
         video { 
             width: 100%; 
             border-radius: 12px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             display: block; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
         }
-        .video-label { text-align: center; font-weight: 600; margin-top: 10px; color: #555; }
+        .video-label { text-align: center; font-weight: 600; margin-top: 15px; font-size: 0.95rem; }
 
         /* Sections */
-        .content { margin-top: 60px; text-align: center; }
-        h2 { font-size: 1.8rem; margin-bottom: 20px; }
+        .content-section { margin-top: 80px; }
+        .abstract { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.15rem; }
+        
+        h2 { font-size: 2rem; font-weight: 700; margin-bottom: 30px; text-align: center; }
 
-        /* Team Section */
+        /* Team Grid */
         .team-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
             margin-top: 40px;
-            padding: 20px 0;
         }
         .member { text-align: center; }
-        .member-name { font-weight: 700; display: block; }
-        .member-role { font-size: 0.9rem; color: #86868b; }
+        .member-name { font-weight: 700; font-size: 1.1rem; display: block; }
+        .member-role { font-size: 0.9rem; color: var(--text-secondary); }
 
-        /* Contact Footer */
         footer {
-            margin-top: 80px;
-            padding-top: 40px;
+            margin-top: 100px;
+            padding: 60px 0 20px;
             border-top: 1px solid #d2d2d7;
             text-align: center;
-            font-size: 0.95rem;
         }
-        .contact-links { margin-top: 15px; }
         .contact-links a {
             margin: 0 15px;
-            color: #0066cc;
+            color: var(--accent-color);
             text-decoration: none;
+            font-weight: 500;
         }
-        .contact-links a:hover { text-decoration: underline; }
 
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             .video-comparison { flex-direction: column; }
-            .video-item { width: 100%; }
+            h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
     <header>
+        <span class="university-tag">University of Bristol</span>
         <h1>3D Semantic Splatting</h1>
-        <p>DINOv3 Vision Transformer Semantic Embeddings paired with 3D Gaussian Splatting Models.</p>
+        <p class="header-sub">DINOv3 Vision Transformer Semantic Embeddings paired with 3D Gaussian Splatting Models.</p>
+        
+        <div class="project-links">
+            <a href="#" class="btn btn-primary">Download Paper</a>
+            <a href="https://github.com/your-repo" class="btn">View Code</a>
+            <a href="mailto:os22435@bristol.ac.uk" class="btn">Contact</a>
+        </div>
     </header>
 
     <div class="video-comparison">
@@ -85,59 +133,54 @@
             <video autoplay muted loop playsinline>
                 <source src="Standard 4K.mp4" type="video/mp4">
             </video>
-            <div class="video-label">3DGS Model</div>
+            <div class="video-label">Standard 3DGS</div>
         </div>
         <div class="video-item">
             <video autoplay muted loop playsinline>
                 <source src="Semantic 4K.mp4" type="video/mp4">
             </video>
-            <div class="video-label">Semantic Gaussian Splatting Model</div>
+            <div class="video-label">Semantic Gaussian Splatting</div>
         </div>
     </div>
 
-<section class="content">
-        <h2>Project Overview</h2>
-        <p>
-            This project demonstrates the integration of semantic labels into 3D Gaussian Splatting. 
-            By training on multi-view imagery, we produce a 
-            consistent, high-fidelity 3D map where every "splat" carries a classification.
-        </p>
+    <section class="content-section">
+        <div class="abstract">
+            <h2>Abstract</h2>
+            <p>
+                This research presents a novel approach to scene understanding by integrating 
+                <strong>DINOv3 semantic embeddings</strong> directly into the 3D Gaussian Splatting pipeline. 
+                By supervising high-dimensional feature vectors across multi-view imagery, we achieve 
+                view-consistent 3D semantic segmentation that maintains real-time rendering speeds.
+            </p>
+        </div>
 
-        <h2 style="margin-top: 60px;">The Team</h2>
+        <h2 style="margin-top: 100px;">The Research Team</h2>
         <div class="team-section">
             <div class="member">
                 <span class="member-name">Josh Hyde</span>
-                <span class="member-role">Lead Researcher</span>
+                <span class="member-role">Lead Researcher <br> University of Bristol</span>
             </div>
             <div class="member">
-                <span class="Jeff Clark">Supervisor Name</span>
-                <span class="Supervisor">Academic Supervisor</span>
+                <span class="member-name">Jeff Clark</span>
+                <span class="member-role">Academic Supervisor <br> University of Bristol</span>
             </div>
             <div class="member">
-                <span class="Rob Jones">Supervisor Name</span>
-                <span class="Supervisor">Academic Supervisor</span>
+                <span class="member-name">Rob Jones</span>
+                <span class="member-role">Academic Supervisor <br> University of Bristol</span>
             </div>
         </div>
     </section>
 
     <footer>
         <h3>Get in Touch</h3>
-        <p>Interested in my work? Reach out to me below.</p>
+        <p>For inquiries regarding collaboration or data access:</p>
         <div class="contact-links">
             <a href="mailto:os22435@bristol.ac.uk">Email</a>
             <a href="https://www.linkedin.com/in/joshua-hyde-778439265/" target="_blank">LinkedIn</a>
         </div>
-        <p style="margin-top: 30px; font-size: 0.8rem; color: #86868b;">&copy; 2026 Josh Hyde · University of Bristol. All rights reserved.</p>
-    </footer>
-
-    <footer>
-        <h3>Get in Touch</h3>
-        <p>Interested in my work? Reach out to me below.</p>
-        <div class="contact-links">
-            <a href="os22435@bristol.ac.uk">Email</a>
-            <a href="https://www.linkedin.com/in/joshua-hyde-778439265/" target="_blank">LinkedIn</a>
-        </div>
-        <p style="margin-top: 30px; font-size: 0.8rem; color: #86868b;">&copy; 2026 Semantic Splatting Project. All rights reserved.</p>
+        <p style="margin-top: 40px; font-size: 0.85rem; color: var(--text-secondary);">
+            &copy; 2026 Josh Hyde · University of Bristol · Student Research Project · Engineering Mathematics
+        </p>
     </footer>
 
 </body>
