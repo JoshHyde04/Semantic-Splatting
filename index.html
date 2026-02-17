@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic Splatting</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1000px; /* Wider to fit two videos */
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            background-color: #ffffff;
+            color: #1d1d1f; 
+        }
+        header { text-align: center; margin-bottom: 60px; }
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
+        
+        /* The Container for side-by-side videos */
+        .video-comparison { 
+            display: flex; 
+            gap: 20px; /* Space between videos */
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .video-item {
+            flex: 1; /* Makes both videos take up equal width */
+            min-width: 300px; /* Prevents them from getting too squashed */
+        }
+
+        video { 
+            width: 100%; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: block; 
+        }
+
+        .video-label {
+            text-align: center;
+            font-weight: 600;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .content { margin-top: 40px; text-align: center; }
+        
+        /* Mobile Responsive: Stack videos on small screens */
+        @media (max-width: 768px) {
+            .video-comparison { flex-direction: column; }
+            .video-item { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Semantic Splatting</h1>
+        <p>Real-time 3D reconstruction and semantic segmentation.</p>
+    </header>
+
+    <div class="video-comparison">
+        <div class="video-item">
+            <video autoplay muted loop playsinline>
+                <source src="video1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-label">Input Video</div>
+        </div>
+
+        <div class="video-item">
+            <video autoplay muted loop playsinline>
+                <source src="video2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-label">Semantic Gaussian Splatting</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Project Overview</h2>
+        <p>
+            This project demonstrates the integration of semantic labels into 3D Gaussian Splatting. 
+            By training on multi-view imagery with inconsistent segmentation, we produce a 
+            consistent, high-fidelity 3D map where every "splat" carries a classification.
+        </p>
+    </div>
+
+</body>
+</html>
