@@ -8,7 +8,7 @@
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             line-height: 1.6; 
-            max-width: 1000px; /* Wider to fit two videos */
+            max-width: 1000px; 
             margin: 0 auto; 
             padding: 40px 20px; 
             background-color: #ffffff;
@@ -17,37 +17,56 @@
         header { text-align: center; margin-bottom: 60px; }
         h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
         
-        /* The Container for side-by-side videos */
+        /* Video Container */
         .video-comparison { 
             display: flex; 
-            gap: 20px; /* Space between videos */
+            gap: 20px; 
             justify-content: center;
             align-items: flex-start;
             margin-bottom: 30px;
         }
-
-        .video-item {
-            flex: 1; /* Makes both videos take up equal width */
-            min-width: 300px; /* Prevents them from getting too squashed */
-        }
-
+        .video-item { flex: 1; min-width: 300px; }
         video { 
             width: 100%; 
             border-radius: 12px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             display: block; 
         }
+        .video-label { text-align: center; font-weight: 600; margin-top: 10px; color: #555; }
 
-        .video-label {
-            text-align: center;
-            font-weight: 600;
-            margin-top: 10px;
-            color: #555;
+        /* Sections */
+        .content { margin-top: 60px; text-align: center; }
+        h2 { font-size: 1.8rem; margin-bottom: 20px; }
+
+        /* Team Section */
+        .team-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            padding: 20px 0;
         }
+        .member { text-align: center; }
+        .member-name { font-weight: 700; display: block; }
+        .member-role { font-size: 0.9rem; color: #86868b; }
 
-        .content { margin-top: 40px; text-align: center; }
-        
-        /* Mobile Responsive: Stack videos on small screens */
+        /* Contact Footer */
+        footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #d2d2d7;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        .contact-links { margin-top: 15px; }
+        .contact-links a {
+            margin: 0 15px;
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .contact-links a:hover { text-decoration: underline; }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .video-comparison { flex-direction: column; }
             .video-item { width: 100%; }
@@ -57,36 +76,69 @@
 <body>
 
     <header>
-        <h1>Semantic Splatting</h1>
-        <p>Real-time 3D reconstruction and semantic segmentation.</p>
+        <h1>3D Semantic Splatting</h1>
+        <p>DINOv3 Vision Transformer Semantic Embeddings paired with 3D Gaussian Splatting Models.</p>
     </header>
 
     <div class="video-comparison">
         <div class="video-item">
             <video autoplay muted loop playsinline>
                 <source src="Standard 4K.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
-            <div class="video-label">Input Video</div>
+            <div class="video-label">3DGS Model</div>
         </div>
-
         <div class="video-item">
             <video autoplay muted loop playsinline>
                 <source src="Semantic 4K.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
-            <div class="video-label">Semantic Gaussian Splatting</div>
+            <div class="video-label">Semantic Gaussian Splatting Model</div>
         </div>
     </div>
 
-    <div class="content">
+<section class="content">
         <h2>Project Overview</h2>
         <p>
             This project demonstrates the integration of semantic labels into 3D Gaussian Splatting. 
-            By training on multi-view imagery with inconsistent segmentation, we produce a 
+            By training on multi-view imagery, we produce a 
             consistent, high-fidelity 3D map where every "splat" carries a classification.
         </p>
-    </div>
+
+        <h2 style="margin-top: 60px;">The Team</h2>
+        <div class="team-section">
+            <div class="member">
+                <span class="member-name">Josh Hyde</span>
+                <span class="member-role">Lead Researcher</span>
+            </div>
+            <div class="member">
+                <span class="Jeff Clark">Supervisor Name</span>
+                <span class="Supervisor">Academic Supervisor</span>
+            </div>
+            <div class="member">
+                <span class="Rob Jones">Supervisor Name</span>
+                <span class="Supervisor">Academic Supervisor</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h3>Get in Touch</h3>
+        <p>Interested in my work? Reach out to me below.</p>
+        <div class="contact-links">
+            <a href="mailto:os22435@bristol.ac.uk">Email</a>
+            <a href="https://www.linkedin.com/in/joshua-hyde-778439265/" target="_blank">LinkedIn</a>
+        </div>
+        <p style="margin-top: 30px; font-size: 0.8rem; color: #86868b;">&copy; 2026 Josh Hyde · University of Bristol. All rights reserved.</p>
+    </footer>
+
+    <footer>
+        <h3>Get in Touch</h3>
+        <p>Interested in my work? Reach out to me below.</p>
+        <div class="contact-links">
+            <a href="os22435@bristol.ac.uk">Email</a>
+            <a href="https://www.linkedin.com/in/joshua-hyde-778439265/" target="_blank">LinkedIn</a>
+        </div>
+        <p style="margin-top: 30px; font-size: 0.8rem; color: #86868b;">&copy; 2026 Semantic Splatting Project. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
