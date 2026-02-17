@@ -15,9 +15,9 @@
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
             line-height: 1.6; 
-            max-width: 1050px; 
+            max-width: 1200px; 
             margin: 0 auto; 
-            padding: 60px 20px; 
+            padding: 40px 20px; 
             background-color: #ffffff;
             color: var(--text-main); 
             -webkit-font-smoothing: antialiased;
@@ -67,7 +67,7 @@
             justify-content: center;
             margin: 40px 0 80px;
         }
-        .video-item { flex: 1; background: var(--bg-gray); padding: 12px; border-radius: 20px; }
+        .video-item { flex: 1; background: var(--bg-gray); padding: 6px; border-radius: 20px; }
         video { width: 100%; border-radius: 12px; display: block; box-shadow: 0 8px 30px rgba(0,0,0,0.05); }
         .video-label { text-align: center; font-weight: 600; margin-top: 15px; font-size: 0.95rem; }
 
@@ -149,5 +149,20 @@
         </p>
     </footer>
 
+    <script>
+    const vids = document.querySelectorAll('video');
+    let master = vids[0];
+
+    // When the first video plays, make the second one play
+    master.onplay = () => vids[1].play();
+    master.onpause = () => vids[1].pause();
+    
+    // Attempt to sync time if they drift
+    setInterval(() => {
+        if (Math.abs(vids[0].currentTime - vids[1].currentTime) > 0.1) {
+            vids[1].currentTime = vids[0].currentTime;
+        }
+    }, 1000);
+</script>
 </body>
 </html>
