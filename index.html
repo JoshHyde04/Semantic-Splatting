@@ -79,16 +79,20 @@
             max-width: 900px;
             text-align: center;
         }
+                /* Update this specific class in your <style> block */
         .slider-container {
             position: relative;
             width: 100%;
+            /* FORCE IT OPEN: This ensures you see it even if images fail */
+            min-height: 400px; 
+            background-color: #ffe6e6; /* Light red background to spot it */
+            border: 5px solid red;     /* Bright red border to prove it exists */
+            
             overflow: hidden;
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            cursor: ew-resize; /* Shows resize cursor */
-            line-height: 0;
-            user-select: none; /* Prevents highlighting images */
-        }
+            cursor: col-resize;
+            user-select: none;
+}
         
         .slider-image-bg {
             display: block;
@@ -219,7 +223,7 @@
     <section class="slider-section">
         <h2>Semantic Feature Comparison</h2>
         <div class="slider-container" id="slider">
-            <img src="slider-rgb.png" class="slider-image-bg" alt="Standard RGB View">
+            <img src="slider_rgb.png" class="slider-image-bg" alt="Standard RGB View">
             
             <div class="slider-image-fg" id="slider-fg">
                 <img src="slider-semantic.png" id="slider-fg-img" alt="Semantic Features View">
