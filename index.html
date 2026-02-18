@@ -58,48 +58,37 @@
         .btn:hover { background: #e8e8ed; border-color: #d2d2d7; }
         .btn-tbd { opacity: 0.6; cursor: default; }
 
-        /* Videos */
-        .video-comparison { 
-            display: flex; 
-            gap: 24px; 
-            justify-content: center;
-            margin: 40px 0 60px;
-        }
-        .video-item { flex: 1; background: var(--bg-gray); padding: 6px; border-radius: 20px; }
-        video { width: 100%; border-radius: 12px; display: block; box-shadow: 0 8px 30px rgba(0,0,0,0.05); }
-        .video-label { text-align: center; font-weight: 600; margin-top: 15px; font-size: 0.95rem; }
-
         .content-section { margin-top: 60px; }
         .abstract-box { max-width: 820px; margin: 0 auto; text-align: center; }
         h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; text-align: center; }
 
-        /* --- SLIDER STYLES --- */
+        /* --- REUSABLE SLIDER STYLES --- */
         .slider-section {
             margin: 80px auto;
             max-width: 900px;
             text-align: center;
         }
-                /* Update this specific class in your <style> block */
+        
         .slider-container {
             position: relative;
             width: 100%;
-            /* Removed min-height, background-color, and border */
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            cursor: ew-resize; /* Shows resize cursor */
+            cursor: ew-resize; 
             line-height: 0;
-            user-select: none; /* Prevents highlighting images */
+            user-select: none; 
+            background: #000;
         }
         
-        .slider-image-bg {
+        .slider-bg-media {
             display: block;
             width: 100%;
             height: auto;
             pointer-events: none;
         }
         
-        .slider-image-fg {
+        .slider-fg-container {
             position: absolute;
             top: 0;
             left: 0;
@@ -107,14 +96,12 @@
             height: 100%;
             overflow: hidden;
             border-right: 2px solid white; 
-            background: white; /* Fallback if image fails */
+            z-index: 2;
         }
         
-        /* IMPORTANT: This image must be the exact same width as the container 
-           so it overlays perfectly. We handle this in JS. */
-        .slider-image-fg img {
+        .slider-fg-media {
             height: 100%;
-            object-fit: cover; /* Ensures aspect ratio is kept */
+            object-fit: cover; 
             display: block;
             pointer-events: none;
         }
@@ -122,7 +109,7 @@
         .slider-handle {
             position: absolute;
             top: 50%;
-            left: 50%; /* Starts at 50% */
+            left: 50%; 
             transform: translate(-50%, -50%);
             width: 40px;
             height: 40px;
@@ -136,7 +123,6 @@
             z-index: 10;
         }
         
-        /* Arrows on the handle */
         .slider-handle::before, .slider-handle::after {
             content: '';
             display: block;
@@ -149,8 +135,8 @@
         .slider-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
-            font-size: 0.9rem;
+            margin-top: 15px;
+            font-size: 0.95rem;
             color: var(--text-secondary);
             font-weight: 600;
             padding: 0 10px;
@@ -165,7 +151,6 @@
         .contact-links a { margin: 0 15px; color: var(--accent-color); text-decoration: none; font-weight: 500; }
 
         @media (max-width: 768px) {
-            .video-comparison { flex-direction: column; }
             h1 { font-size: 2.2rem; }
         }
     </style>
@@ -189,22 +174,7 @@
         </div>
     </header>
 
-    <div class="video-comparison">
-        <div class="video-item">
-            <video autoplay muted loop playsinline>
-                <source src="Standard 4K.mp4" type="video/mp4">
-            </video>
-            <div class="video-label">Standard 3DGS</div>
-        </div>
-        <div class="video-item">
-            <video autoplay muted loop playsinline>
-                <source src="Semantic 4K.mp4" type="video/mp4">
-            </video>
-            <div class="video-label">Semantic Gaussian Splatting</div>
-        </div>
-    </div>
-
-    <section class="content-section">
+    <section class="content-section" style="margin-top: 0;">
         <div class="abstract-box">
             <h2>Abstract</h2>
             <p>
@@ -219,15 +189,41 @@
     </section>
 
     <section class="slider-section">
-        <h2>Semantic Feature Comparison</h2>
-        <div class="slider-container" id="slider">
-            <img src="slider_rgb.png" class="slider-image-bg" alt="Standard RGB View">
+        <h2>Interactive Semantic Digital Twin (Video)</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Drag the slider to compare the Standard RGB rendering with the high-dimensional DINOv3 feature landscape dynamically.</p>
+        
+        <div class="slider-container">
+            <video class="slider-bg-media" id="vid-bg" autoplay muted loop playsinline>
+                <source src="Standard 4K.mp4" type="video/mp4">
+            </video>
             
-            <div class="slider-image-fg" id="slider-fg">
-                <img src="slider_semantic.png" id="slider-fg-img" alt="Semantic Features View">
+            <div class="slider-fg-container">
+                <video class="slider-fg-media" id="vid-fg" autoplay muted loop playsinline>
+                    <source src="Semantic 4K.mp4" type="video/mp4">
+                </video>
             </div>
 
-            <div class="slider-handle" id="slider-handle"></div>
+            <div class="slider-handle"></div>
+        </div>
+        
+        <div class="slider-labels">
+            <span>Standard RGB 3DGS</span>
+            <span>Semantic Feature Field</span>
+        </div>
+    </section>
+
+    <section class="slider-section">
+        <h2>High-Resolution Benthic Details (Image)</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">A static, pixel-perfect top-down slice showing accurate semantic clustering across complex geometry.</p>
+        
+        <div class="slider-container">
+            <img src="slider_rgb.png" class="slider-bg-media" alt="Standard RGB View">
+            
+            <div class="slider-fg-container">
+                <img src="slider_semantic.png" class="slider-fg-media" alt="Semantic Features View">
+            </div>
+
+            <div class="slider-handle"></div>
         </div>
         <div class="slider-labels">
             <span>Standard RGB</span>
@@ -247,66 +243,92 @@
     </footer>
 
     <script>
-    // --- VIDEO SYNC LOGIC ---
-    const vids = document.querySelectorAll('video');
-    if (vids.length >= 2) {
-        let master = vids[0];
-        master.onplay = () => vids[1].play();
-        master.onpause = () => vids[1].pause();
-        setInterval(() => {
-            if (Math.abs(vids[0].currentTime - vids[1].currentTime) > 0.1) {
-                vids[1].currentTime = vids[0].currentTime;
-            }
-        }, 1000);
-    }
+    // --- VIDEO SYNCHRONIZATION LOGIC (Only applies to the video tags) ---
+    const vidBg = document.getElementById('vid-bg');
+    const vidFg = document.getElementById('vid-fg');
 
-    // --- SLIDER LOGIC ---
-    const slider = document.getElementById('slider');
-    const sliderFg = document.getElementById('slider-fg');
-    const sliderFgImg = document.getElementById('slider-fg-img');
-    const sliderHandle = document.getElementById('slider-handle');
-
-    function updateSlider(pageX) {
-        const rect = slider.getBoundingClientRect();
-        // Calculate raw position relative to slider
-        let x = pageX - rect.left;
+    if (vidBg && vidFg) {
+        vidBg.onplay = () => vidFg.play();
+        vidBg.onpause = () => vidFg.pause();
         
-        // Clamp x to stay within the container
-        if (x < 0) x = 0;
-        if (x > rect.width) x = rect.width;
-
-        // Calculate percentage
-        let percent = (x / rect.width) * 100;
-
-        sliderFg.style.width = percent + "%";
-        sliderHandle.style.left = percent + "%";
+        setInterval(() => {
+            if (Math.abs(vidBg.currentTime - vidFg.currentTime) > 0.1) {
+                vidFg.currentTime = vidBg.currentTime;
+            }
+        }, 500);
     }
 
-    // Ensures the foreground image is always exactly the width of the container
-    // This prevents the "squishing" effect when resizing the window
-    function syncImageSize() {
-        if(slider.offsetWidth > 0) {
-            sliderFgImg.style.width = slider.offsetWidth + "px";
+    // --- UNIVERSAL SLIDER LOGIC ---
+    // This finds every .slider-container on the page and applies the logic independently
+    const sliders = document.querySelectorAll('.slider-container');
+
+    sliders.forEach(slider => {
+        const fgContainer = slider.querySelector('.slider-fg-container');
+        const fgMedia = slider.querySelector('.slider-fg-media');
+        const handle = slider.querySelector('.slider-handle');
+        
+        let isDragging = false;
+
+        function updateSlider(pageX) {
+            const rect = slider.getBoundingClientRect();
+            let x = pageX - rect.left;
+            
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+
+            let percent = (x / rect.width) * 100;
+
+            fgContainer.style.width = percent + "%";
+            handle.style.left = percent + "%";
         }
-    }
-    
-    // Event Listeners
-    window.addEventListener('resize', syncImageSize);
-    
-    // Important: Run syncImageSize immediately, and after images load
-    syncImageSize();
-    window.addEventListener('load', syncImageSize);
 
-    // Mouse Interaction
-    slider.addEventListener('mousemove', (e) => {
-        updateSlider(e.clientX);
-    });
+        // Keeps foreground media width locked to the container width to prevent squishing
+        function syncMediaSize() {
+            if(slider.offsetWidth > 0) {
+                fgMedia.style.width = slider.offsetWidth + "px";
+            }
+        }
+        
+        window.addEventListener('resize', syncMediaSize);
+        syncMediaSize();
+        
+        // Ensure dimensions sync after media loads
+        if (fgMedia.tagName === 'VIDEO') {
+            fgMedia.addEventListener('loadedmetadata', syncMediaSize);
+        } else {
+            fgMedia.addEventListener('load', syncMediaSize);
+        }
 
-    // Touch Interaction
-    slider.addEventListener('touchmove', (e) => {
-        // Prevent scrolling while sliding
-        // e.preventDefault(); 
-        updateSlider(e.touches[0].clientX);
+        // Mouse Events
+        slider.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            updateSlider(e.clientX);
+        });
+        
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) updateSlider(e.clientX);
+        });
+
+        // Touch Events
+        slider.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            updateSlider(e.touches[0].clientX);
+        }, {passive: true});
+        
+        window.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+        
+        slider.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                e.preventDefault(); 
+                updateSlider(e.touches[0].clientX);
+            }
+        }, { passive: false });
     });
     </script>
 </body>
