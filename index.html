@@ -65,7 +65,7 @@
             display: flex; 
             gap: 24px; 
             justify-content: center;
-            margin: 40px 0 80px;
+            margin: 40px 0 60px;
         }
         .video-item { flex: 1; background: var(--bg-gray); padding: 6px; border-radius: 20px; }
         video { width: 100%; border-radius: 12px; display: block; box-shadow: 0 8px 30px rgba(0,0,0,0.05); }
@@ -75,6 +75,84 @@
         .content-section { margin-top: 60px; }
         .abstract-box { max-width: 820px; margin: 0 auto; text-align: justify; }
         h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; text-align: center; }
+
+        /* --- SLIDER STYLES START --- */
+        .slider-section {
+            margin: 80px auto;
+            max-width: 900px; /* Adjust width as needed */
+        }
+        .slider-container {
+            position: relative;
+            width: 100%;
+            /* Maintain aspect ratio padding hack (e.g. 16:9 = 56.25%) 
+               OR just set height auto if using JS to detect image height.
+               Here we let the image define the height. */
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            cursor: col-resize;
+            line-height: 0; /* Removes gap below images */
+        }
+        
+        .slider-image-bg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        
+        .slider-image-fg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%; /* Initial split */
+            height: 100%;
+            overflow: hidden;
+            border-right: 2px solid white; 
+        }
+        
+        /* The inner foreground image must be the same size as container 
+           so it aligns perfectly with the background */
+        .slider-image-fg img {
+            width: 100vw; /* Will be capped by max-width of container logic in JS */
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            pointer-events: none; /* Let clicks pass through to container */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .slider-handle::before, .slider-handle::after {
+            content: '';
+            display: block;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+        .slider-handle::before { border-right: 8px solid var(--text-main); margin-right: 4px; }
+        .slider-handle::after { border-left: 8px solid var(--text-main); margin-left: 4px; }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        /* --- SLIDER STYLES END --- */
 
         footer {
             margin-top: 100px;
@@ -138,6 +216,23 @@
         </div>
     </section>
 
+    <section class="slider-section">
+        <h2>Semantic Feature Comparison</h2>
+        <div class="slider-container" id="slider">
+            <img src="slider-rgb.png" class="slider-image-bg" alt="Standard RGB View">
+            
+            <div class="slider-image-fg" id="slider-fg">
+                <img src="slider-semantic.png" id="slider-fg-img" alt="Semantic Features View">
+            </div>
+
+            <div class="slider-handle" id="slider-handle"></div>
+        </div>
+        <div class="slider-labels">
+            <span>Standard RGB</span>
+            <span>Semantic Features</span>
+        </div>
+    </section>
+
     <footer>
         <h3>Get in Touch</h3>
         <div class="contact-links">
@@ -150,19 +245,55 @@
     </footer>
 
     <script>
+    // --- VIDEO SYNC LOGIC ---
     const vids = document.querySelectorAll('video');
     let master = vids[0];
-
-    // When the first video plays, make the second one play
     master.onplay = () => vids[1].play();
     master.onpause = () => vids[1].pause();
-    
-    // Attempt to sync time if they drift
     setInterval(() => {
         if (Math.abs(vids[0].currentTime - vids[1].currentTime) > 0.1) {
             vids[1].currentTime = vids[0].currentTime;
         }
     }, 1000);
-</script>
+
+    // --- SLIDER LOGIC ---
+    const slider = document.getElementById('slider');
+    const sliderFg = document.getElementById('slider-fg');
+    const sliderFgImg = document.getElementById('slider-fg-img');
+    const sliderHandle = document.getElementById('slider-handle');
+
+    function updateSlider(x) {
+        const rect = slider.getBoundingClientRect();
+        // Calculate percentage (0 to 100)
+        let percent = ((x - rect.left) / rect.width) * 100;
+        // Clamp between 0 and 100
+        percent = Math.max(0, Math.min(100, percent));
+
+        sliderFg.style.width = percent + "%";
+        sliderHandle.style.left = percent + "%";
+    }
+
+    // Set Foreground Image width to match Container width exactly
+    // This ensures the image doesn't squish when the div shrinks
+    function syncImageSize() {
+        if(slider.offsetWidth > 0) {
+            sliderFgImg.style.width = slider.offsetWidth + "px";
+        }
+    }
+    
+    window.addEventListener('resize', syncImageSize);
+    // Initial sync
+    window.onload = syncImageSize;
+
+    // Mouse Interaction
+    slider.addEventListener('mousemove', (e) => {
+        updateSlider(e.clientX);
+    });
+
+    // Touch Interaction
+    slider.addEventListener('touchmove', (e) => {
+        updateSlider(e.touches[0].clientX);
+    });
+    </script>
 </body>
 </html>
