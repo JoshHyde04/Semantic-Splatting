@@ -10,12 +10,14 @@
             --text-main: #1d1d1f;
             --text-secondary: #86868b;
             --bg-gray: #f5f5f7;
+            --btn-bg: #1d1d1f;
+            --btn-text: #ffffff;
         }
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
             line-height: 1.6; 
-            max-width: 1200px; 
+            max-width: 1000px; /* Slightly narrower for better reading length */
             margin: 0 auto; 
             padding: 40px 20px; 
             background-color: #ffffff;
@@ -23,50 +25,72 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        header { text-align: center; margin-bottom: 60px; }
+        /* --- HEADER STYLES --- */
+        header { text-align: center; margin-bottom: 40px; }
         
-        .university-tag {
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            display: block;
+        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.02em; }
+        .header-sub { font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 20px; }
+
+        .author-info { margin-bottom: 25px; font-size: 1.1rem; }
+        .author-names { font-weight: 500; margin-bottom: 4px; }
+        .author-names a { color: var(--text-main); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s;}
+        .author-names a:hover { border-color: var(--text-main); }
+        .university-info { color: var(--text-secondary); font-size: 1rem; }
+        .supervisor-note { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px; }
+
+        /* --- BUTTONS --- */
+        .project-links { 
+            display: flex; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-bottom: 30px; 
+            flex-wrap: wrap;
         }
-
-        h1 { font-size: 3rem; font-weight: 700; margin-bottom: 15px; letter-spacing: -0.02em; }
-        .header-sub { font-size: 1.25rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 30px; }
-
-        .author-info { margin-bottom: 40px; }
-        .author-name { font-weight: 600; font-size: 1.15rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 2px; }
-        .supervisor-info { color: var(--text-secondary); font-size: 0.95rem; margin-top: 8px; }
-
-        .project-links { margin-bottom: 40px; }
         .btn {
             display: inline-block;
             padding: 10px 24px;
-            margin: 0 8px;
             border-radius: 20px;
-            background: var(--bg-gray);
-            color: var(--text-main);
+            background: var(--btn-bg);
+            color: var(--btn-text);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.2s ease;
             border: 1px solid transparent;
+            font-size: 0.95rem;
         }
-        .btn:hover { background: #e8e8ed; border-color: #d2d2d7; }
-        .btn-tbd { opacity: 0.6; cursor: default; }
+        .btn:hover { background: #333336; }
+        .btn-tbd { opacity: 0.4; cursor: not-allowed; }
 
-        .content-section { margin-top: 60px; }
-        .abstract-box { max-width: 820px; margin: 0 auto; text-align: center; }
-        h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; text-align: center; }
+        /* --- CONTENT SECTIONS --- */
+        .content-section { margin-top: 40px; }
+        .text-box { max-width: 820px; margin: 0 auto; text-align: left; }
+        
+        h2 { font-size: 1.6rem; font-weight: 600; margin-bottom: 15px; text-align: left; }
+        .text-box h2 { border-bottom: 1px solid #e8e8ed; padding-bottom: 8px; }
 
-        /* --- REUSABLE SLIDER STYLES --- */
+        /* --- SLIDER STYLES --- */
         .slider-section {
-            margin: 80px auto;
+            margin: 60px auto;
             max-width: 900px;
+        }
+        
+        .slider-section h2 { text-align: center; font-size: 1.5rem; margin-bottom: 20px; border: none; }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 0 5px;
+        }
+
+        .slider-caption {
+            color: var(--text-secondary);
+            margin-top: 15px;
             text-align: center;
+            font-size: 0.95rem;
         }
         
         .slider-container {
@@ -81,12 +105,7 @@
             background: #000;
         }
         
-        .slider-bg-media {
-            display: block;
-            width: 100%;
-            height: auto;
-            pointer-events: none;
-        }
+        .slider-bg-media { display: block; width: 100%; height: auto; pointer-events: none; }
         
         .slider-fg-container {
             position: absolute;
@@ -99,12 +118,7 @@
             z-index: 2;
         }
         
-        .slider-fg-media {
-            height: 100%;
-            object-fit: cover; 
-            display: block;
-            pointer-events: none;
-        }
+        .slider-fg-media { height: 100%; object-fit: cover; display: block; pointer-events: none; }
 
         .slider-handle {
             position: absolute;
@@ -123,48 +137,46 @@
             z-index: 10;
         }
         
-        .slider-handle::before, .slider-handle::after {
-            content: '';
-            display: block;
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-        }
+        .slider-handle::before, .slider-handle::after { content: ''; display: block; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
         .slider-handle::before { border-right: 8px solid var(--text-main); margin-right: 4px; }
         .slider-handle::after { border-left: 8px solid var(--text-main); margin-left: 4px; }
-        
-        .slider-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            padding: 0 10px;
-        }
 
+        /* --- FOOTER --- */
         footer {
-            margin-top: 100px;
-            padding: 60px 0 20px;
+            margin-top: 80px;
+            padding: 40px 0 20px;
             border-top: 1px solid #d2d2d7;
             text-align: center;
         }
-        .contact-links a { margin: 0 15px; color: var(--accent-color); text-decoration: none; font-weight: 500; }
+        .contact-links a { margin: 0 15px; color: var(--text-main); text-decoration: none; font-weight: 500; }
+        .contact-links a:hover { text-decoration: underline; }
 
+        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; }
+            .header-sub { font-size: 1.1rem; }
+            .desktop-break { display: none; } /* Hides forced line breaks on mobile */
+            .project-links { gap: 8px; }
+            .btn { width: 100%; text-align: center; box-sizing: border-box; } /* Full width buttons on mobile */
+            .slider-labels { font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <span class="university-tag">University of Bristol</span>
         <h1>3D Semantic Splatting</h1>
-        <p class="header-sub">Fusing DINOv3 Foundation Models with 3D Gaussian Splatting for Coral Reef Monitoring</p>
+        <p class="header-sub">
+            Fusing DINOv3 Embeddings with <br class="desktop-break">
+            3D Gaussian Splatting for Coral Reef Monitoring
+        </p>
         
         <div class="author-info">
-            <span class="author-name">Josh Hyde</span>
-            <div class="supervisor-info">Supervised by Jeff Clark & Rob Jones</div>
+            <div class="author-names">
+                <a href="#">Josh Hyde</a>, <a href="#">Jeff Clark</a>*, <a href="#">Rob Jones</a>*
+            </div>
+            <div class="university-info">University of Bristol</div>
+            <span class="supervisor-note">*Supervisors</span>
         </div>
 
         <div class="project-links">
@@ -175,7 +187,7 @@
     </header>
 
     <section class="content-section" style="margin-top: 0;">
-        <div class="abstract-box">
+        <div class="text-box">
             <h2>Abstract</h2>
             <p>
                 Coral reefs are highly vulnerable to climate change,
@@ -195,8 +207,12 @@
     </section>
 
     <section class="slider-section">
-        <h2>Exploring the Digital Twin: Photorealistic vs. Semantic Feature Fields</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">Drag the slider to compare the Standard RGB rendering with the PCA-projected semantic feature space dynamically.</p>
+        <h2>Exploring the Digital Twin: Photorealistic vs. <br class="desktop-break"> Semantic Feature Fields</h2>
+        
+        <div class="slider-labels">
+            <span>Standard RGB 3DGS</span>
+            <span>Semantic Feature Field</span>
+        </div>
         
         <div class="slider-container">
             <video class="slider-bg-media" id="vid-bg" autoplay muted loop playsinline>
@@ -212,14 +228,14 @@
             <div class="slider-handle"></div>
         </div>
         
-        <div class="slider-labels">
-            <span>Standard RGB 3DGS</span>
-            <span>Semantic Feature Field</span>
-        </div>
+        <p class="slider-caption">Drag the slider to compare the Standard RGB rendering with the PCA-projected semantic feature space dynamically.</p>
     </section>
 
     <section class="slider-section">
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">A static view of the 3D models showing consistent semantic embeddings across complex geometry.</p>
+        <div class="slider-labels">
+            <span>Standard RGB</span>
+            <span>Semantic Features</span>
+        </div>
         
         <div class="slider-container">
             <img src="slider_rgb.png" class="slider-bg-media" alt="Standard RGB View">
@@ -230,18 +246,16 @@
 
             <div class="slider-handle"></div>
         </div>
-        <div class="slider-labels">
-            <span>Standard RGB</span>
-            <span>Semantic Features</span>
-        </div>
+        
+        <p class="slider-caption">A static view of the 3D models showing consistent semantic embeddings across complex geometry.</p>
     </section>
 
     <section class="content-section">
-        <div class="abstract-box" style="border-top: 1px solid #e8e8ed; padding-top: 60px;">
-            <h2 style="font-size: 1.5rem;">Data Acknowledgments</h2>
+        <div class="text-box">
+            <h2>Acknowledgments</h2>
             <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;">
                 Special thanks to the creators of the 
-                <a href="https://huggingface.co/datasets/wildflow/sweet-corals" target="_blank" style="color: var(--accent-color); text-decoration: none; font-weight: 500;">wildflow/sweet-corals</a> 
+                <a href="https://huggingface.co/datasets/wildflow/sweet-corals" target="_blank" style="color: var(--text-main); text-decoration: none; font-weight: 500; border-bottom: 1px solid var(--text-main);">wildflow/sweet-corals</a> 
                 dataset for open-sourcing the high-quality underwater photogrammetry data used in this project. 
                 The visualisations above specifically use the <strong>Tabuhan P1</strong> dataset.
             </p>
@@ -249,18 +263,17 @@
     </section>
 
     <footer>
-        <h3>Get in Touch</h3>
         <div class="contact-links">
             <a href="mailto:os22435@bristol.ac.uk">os22435@bristol.ac.uk</a>
             <a href="https://www.linkedin.com/in/joshua-hyde-778439265/" target="_blank">LinkedIn</a>
         </div>
-        <p style="margin-top: 40px; font-size: 0.85rem; color: var(--text-secondary);">
-            2026 Josh Hyde · University of Bristol · Student Research Project · Engineering Mathematics
+        <p style="margin-top: 30px; font-size: 0.85rem; color: var(--text-secondary);">
+            2026 Josh Hyde · University of Bristol · Student Research Project
         </p>
     </footer>
 
     <script>
-    // --- VIDEO SYNCHRONIZATION LOGIC (Only applies to the video tags) ---
+    // --- VIDEO SYNCHRONIZATION LOGIC ---
     const vidBg = document.getElementById('vid-bg');
     const vidFg = document.getElementById('vid-fg');
 
@@ -276,7 +289,6 @@
     }
 
     // --- UNIVERSAL SLIDER LOGIC ---
-    // This finds every .slider-container on the page and applies the logic independently
     const sliders = document.querySelectorAll('.slider-container');
 
     sliders.forEach(slider => {
@@ -299,7 +311,6 @@
             handle.style.left = percent + "%";
         }
 
-        // Keeps foreground media width locked to the container width to prevent squishing
         function syncMediaSize() {
             if(slider.offsetWidth > 0) {
                 fgMedia.style.width = slider.offsetWidth + "px";
@@ -309,14 +320,12 @@
         window.addEventListener('resize', syncMediaSize);
         syncMediaSize();
         
-        // Ensure dimensions sync after media loads
         if (fgMedia.tagName === 'VIDEO') {
             fgMedia.addEventListener('loadedmetadata', syncMediaSize);
         } else {
             fgMedia.addEventListener('load', syncMediaSize);
         }
 
-        // Mouse Events
         slider.addEventListener('mousedown', (e) => {
             isDragging = true;
             updateSlider(e.clientX);
@@ -330,7 +339,6 @@
             if (isDragging) updateSlider(e.clientX);
         });
 
-        // Touch Events
         slider.addEventListener('touchstart', (e) => {
             isDragging = true;
             updateSlider(e.touches[0].clientX);
