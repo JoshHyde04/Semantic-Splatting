@@ -160,7 +160,7 @@
     <header>
         <span class="university-tag">University of Bristol</span>
         <h1>3D Semantic Splatting</h1>
-        <p class="header-sub">DINOv3 Vision Transformer Semantic Embeddings paired with 3D Gaussian Splatting Models.</p>
+        <p class="header-sub">Fusing DINOv3 Foundation Models with 3D Gaussian Splatting for Coral Reef Monitoring</p>
         
         <div class="author-info">
             <span class="author-name">Josh Hyde</span>
@@ -178,19 +178,25 @@
         <div class="abstract-box">
             <h2>Abstract</h2>
             <p>
-                This ongoing research presents an approach to coral scene understanding that integrates
-                <strong>DINOv3 semantic embeddings</strong> directly into the 3D Gaussian Splatting pipeline. 
-                By supervising high-dimensional feature vectors across multi-view imagery, we have thus far achieved 
-                qualitatively view-consistent 3D semantic segmentation. This methodology 
-                leverages the foundational strengths of Vision Transformers to provide rich, zero-shot 
-                semantic representations within a reconstructed 3D volume.
+                Coral reefs are highly vulnerable to climate change,
+                and while photogrammetry allows for millimetre-scale mapping,
+                supervised AI methods fail without massive labeled datasets. 
+                This ongoing research presents an approach to coral scene 
+                understanding that integrates <strong>DINOv3 semantic 
+                embeddings</strong> directly into the 3D Gaussian Splatting 
+                pipeline. By supervising high-dimensional feature vectors 
+                across multi-view imagery, we have thus far achieved 
+                qualitatively view-consistent 3D semantic segmentation. 
+                This methodology leverages the foundational strengths of Vision
+                Transformers to provide rich, zero-shot semantic representations
+                within a reconstructed 3D volume.
             </p>
         </div>
     </section>
 
     <section class="slider-section">
-        <h2>Comparison Between Semantic Digital Twin and RGB View</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">Drag the slider to compare the Standard RGB rendering with the high-dimensional DINOv3 feature landscape dynamically.</p>
+        <h2>Exploring the Digital Twin: Photorealistic vs. Semantic Feature Fields</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Drag the slider to compare the Standard RGB rendering with the PCA-projected semantic feature space dynamically.</p>
         
         <div class="slider-container">
             <video class="slider-bg-media" id="vid-bg" autoplay muted loop playsinline>
