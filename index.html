@@ -68,6 +68,48 @@
         h2 { font-size: 1.6rem; font-weight: 600; margin-bottom: 15px; text-align: left; }
         .text-box h2 { border-bottom: 1px solid #e8e8ed; padding-bottom: 8px; }
 
+        /* --- PIPELINE STYLES --- */
+        .pipeline-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin: 40px 0;
+        }
+        
+        .pipeline-step {
+            flex: 1;
+            background: var(--bg-gray);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e8e8ed;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .pipeline-step h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        
+        .pipeline-step p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .pipeline-arrow {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
         /* --- SLIDER STYLES --- */
         .slider-section {
             margin: 60px auto;
@@ -141,6 +183,24 @@
         .slider-handle::before { border-right: 8px solid var(--text-main); margin-right: 4px; }
         .slider-handle::after { border-left: 8px solid var(--text-main); margin-left: 4px; }
 
+        /* --- CITATION STYLES --- */
+        .citation-section {
+            margin-top: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .bibtex-box {
+            background-color: var(--bg-gray);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e8e8ed;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            overflow-x: auto;
+            white-space: pre; 
+        }
+
         /* --- FOOTER --- */
         footer {
             margin-top: 80px;
@@ -155,10 +215,13 @@
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; }
             .header-sub { font-size: 1.1rem; }
-            .desktop-break { display: none; } /* Hides forced line breaks on mobile */
+            .desktop-break { display: none; } 
             .project-links { gap: 8px; }
-            .btn { width: 100%; text-align: center; box-sizing: border-box; } /* Full width buttons on mobile */
+            .btn { width: 100%; text-align: center; box-sizing: border-box; } 
             .slider-labels { font-size: 0.85rem; }
+            .pipeline-container { flex-direction: column; gap: 10px; }
+            .pipeline-step { width: 100%; box-sizing: border-box; min-height: auto; }
+            .pipeline-arrow { transform: rotate(90deg); margin: 5px 0; }
         }
     </style>
 </head>
@@ -184,8 +247,7 @@
         </div>
     </header>
 
-    <section class="slider-section">
-        
+    <section class="slider-section" style="margin-top: 20px;">
         <div class="slider-labels">
             <span>Standard RGB 3DGS</span>
             <span>Semantic Feature Field</span>
@@ -207,7 +269,7 @@
         <p class="slider-caption">Drag the slider to compare the Standard RGB rendering with the PCA-projected semantic feature space dynamically.</p>
     </section>
 
-        <section class="content-section" style="margin-top: 0;">
+    <section class="content-section">
         <div class="text-box">
             <h2>Abstract</h2>
             <p>
@@ -227,6 +289,37 @@
         </div>
     </section>
 
+    <section class="content-section">
+        <div class="text-box">
+            <h2>Methodology</h2>
+            <p>
+                To bridge the gap between 2D foundation models and 3D scene representations, we developed a pipeline that extracts dense semantic features and projects them into explicit radiance fields.
+            </p>
+            
+            <div class="pipeline-container">
+                <div class="pipeline-step">
+                    <h3>1. Multi-View Imagery</h3>
+                    <p>Sourcing high-resolution underwater photogrammetry.</p>
+                </div>
+                <div class="pipeline-arrow">&#8594;</div>
+                <div class="pipeline-step">
+                    <h3>2. DINOv3 Extraction</h3>
+                    <p>Overlapping sliding-window extraction to prevent seam artifacts.</p>
+                </div>
+                <div class="pipeline-arrow">&#8594;</div>
+                <div class="pipeline-step">
+                    <h3>3. Feature Compression</h3>
+                    <p>Reducing massive embeddings for memory-efficient processing.</p>
+                </div>
+                <div class="pipeline-arrow">&#8594;</div>
+                <div class="pipeline-step">
+                    <h3>4. Semantic 3DGS</h3>
+                    <p>Optimizing Gaussians with a combined color and semantic loss.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="slider-section">
         <div class="slider-labels">
             <span>Standard RGB</span>
@@ -234,7 +327,7 @@
         </div>
         
         <div class="slider-container">
-            <img src="regular_leveled-image.webp" class="slider-fg-media" alt="Standard RGB View">
+            <img src="regular_leveled-image.webp" class="slider-bg-media" alt="Standard RGB View">
             <div class="slider-fg-container">
                 <img src="semantic_leveled-image.webp" class="slider-fg-media" alt="Semantic Features View">
             </div>
@@ -257,6 +350,21 @@
         </div>
     </section>
 
+    <section class="content-section citation-section">
+        <div class="text-box">
+            <h2>Citation</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 10px;">
+                If you find this work useful for your research, please consider citing:
+            </p>
+            <div class="bibtex-box">@article{hyde2026semanticsplatting,
+  title={3D Semantic Splatting: Fusing DINOv3 features with Gaussian Splatting for Coral Reef Monitoring},
+  author={Hyde, Joshua and Clark, Jeff and Jones, Rob},
+  journal={University of Bristol Student Research Project},
+  year={2026}
+}</div>
+        </div>
+    </section>
+
     <footer>
         <div class="contact-links">
             <a href="mailto:os22435@bristol.ac.uk">os22435@bristol.ac.uk</a>
@@ -268,7 +376,7 @@
     </footer>
 
     <script>
-// --- VIDEO SYNCHRONIZATION LOGIC ---
+    // --- VIDEO SYNCHRONIZATION LOGIC ---
     const vidBg = document.getElementById('vid-bg'); // Master
     const vidFg = document.getElementById('vid-fg'); // Slave
 
