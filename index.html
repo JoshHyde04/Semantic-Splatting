@@ -192,19 +192,18 @@
         </div>
         
         <div class="slider-container">
-            <video class="slider-bg-media" id="vid-bg" autoplay muted loop playsinline>
+            <video class="slider-bg-media" id="vid-bg" muted loop playsinline>
                 <source src="Standard_comp_more.webm" type="video/webm">
             </video>
             
             <div class="slider-fg-container">
-                <video class="slider-fg-media" id="vid-fg" autoplay muted loop playsinline>
+                <video class="slider-fg-media" id="vid-fg" muted loop playsinline>
                     <source src="Semantic.webm" type="video/webm">
                 </video>
             </div>
 
             <div class="slider-handle"></div>
         </div>
-        
         <p class="slider-caption">Drag the slider to compare the Standard RGB rendering with the PCA-projected semantic feature space dynamically.</p>
     </section>
 
@@ -269,17 +268,38 @@
     </footer>
 
     <script>
-    // --- VIDEO SYNCHRONIZATION LOGIC ---
+// --- VIDEO SYNCHRONIZATION LOGIC ---
     const vidBg = document.getElementById('vid-bg');
     const vidFg = document.getElementById('vid-fg');
 
     if (vidBg && vidFg) {
-        vidBg.onplay = () => vidFg.play();
-        vidBg.onpause = () => vidFg.pause();
+        let loaded = 0;
+
+        // Only play when BOTH videos are ready to prevent drift
+        const checkReady = () => {
+            loaded++;
+            if (loaded === 2) {
+                vidBg.play();
+                vidFg.play();
+            }
+        };
+
+        vidBg.addEventListener('canplay', checkReady);
+        vidFg.addEventListener('canplay', checkReady);
+
+        // Lock their playback states
+        vidBg.addEventListener('play', () => vidFg.play());
+        vidBg.addEventListener('pause', () => vidFg.pause());
         
+        // Lock them during loops or seeking
+        vidBg.addEventListener('seeking', () => { vidFg.currentTime = vidBg.currentTime; });
+
+        // Fallback sync check
         setInterval(() => {
-            if (Math.abs(vidBg.currentTime - vidFg.currentTime) > 0.1) {
-                vidFg.currentTime = vidBg.currentTime;
+            if (vidBg.readyState >= 3 && vidFg.readyState >= 3) {
+                if (Math.abs(vidBg.currentTime - vidFg.currentTime) > 0.1) {
+                    vidFg.currentTime = vidBg.currentTime;
+                }
             }
         }, 500);
     }
