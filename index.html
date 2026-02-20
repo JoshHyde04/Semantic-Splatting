@@ -190,14 +190,14 @@
             <span>Standard RGB 3DGS</span>
             <span>Semantic Feature Field</span>
         </div>
-        
+
         <div class="slider-container">
-            <video class="slider-bg-media" id="vid-bg" muted loop playsinline>
+            <video class="slider-bg-media" id="vid-bg" autoplay muted loop playsinline preload="auto">
                 <source src="Standard_comp_more.webm" type="video/webm">
             </video>
             
             <div class="slider-fg-container">
-                <video class="slider-fg-media" id="vid-fg" muted loop playsinline>
+                <video class="slider-fg-media" id="vid-fg" autoplay muted loop playsinline preload="auto">
                     <source src="Semantic.webm" type="video/webm">
                 </video>
             </div>
@@ -268,42 +268,33 @@
     </footer>
 
     <script>
-// --- VIDEO SYNCHRONIZATION LOGIC (SLOW NETWORK SAFE) ---
-    const vidBg = document.getElementById('vid-bg'); // Master Video
-    const vidFg = document.getElementById('vid-fg'); // Slave Video
+// --- VIDEO SYNCHRONIZATION LOGIC ---
+    const vidBg = document.getElementById('vid-bg'); // Master
+    const vidFg = document.getElementById('vid-fg'); // Slave
 
     if (vidBg && vidFg) {
-        // 1. If the Master plays/pauses, force the Slave to match
-        vidBg.addEventListener('play', () => {
-            if (vidFg.readyState >= 3) vidFg.play().catch(() => {});
-        });
-        vidBg.addEventListener('pause', () => vidFg.pause());
+        // 1. Force Slave to copy Master's play/pause state
+        vidBg.onplay = () => vidFg.play().catch(() => {});
+        vidBg.onpause = () => vidFg.pause();
 
-        // 2. BUFFER LOCK: If EITHER video stops to buffer, pause the other!
-        vidBg.addEventListener('waiting', () => vidFg.pause());
+        // 2. If the Slave gets stuck buffering on a slow network, pause the Master!
         vidFg.addEventListener('waiting', () => vidBg.pause());
+        vidFg.addEventListener('canplay', () => {
+            // Resume Master once Slave has enough data
+            if (vidBg.readyState >= 3) vidBg.play().catch(() => {}); 
+        });
 
-        // 3. RESUME: When a video has buffered enough to continue, check if both are ready
-        const tryResume = () => {
-            if (vidBg.readyState >= 3 && vidFg.readyState >= 3) {
-                vidBg.play().catch(() => {});
-            }
-        };
-        vidBg.addEventListener('canplay', tryResume);
-        vidFg.addEventListener('canplay', tryResume);
-
-        // 4. AGGRESSIVE TIME SYNC
-        // requestAnimationFrame is much more accurate than setInterval
+        // 3. Keep them locked together down to the millisecond
         const syncTime = () => {
-            // If they drift by more than 0.1 seconds, snap the Slave to the Master
-            if (!vidBg.paused && !vidFg.paused) {
+            // Only sync if Master is actually playing and Slave has loaded its metadata
+            if (!vidBg.paused && vidFg.readyState >= 1) {
                 if (Math.abs(vidBg.currentTime - vidFg.currentTime) > 0.1) {
                     vidFg.currentTime = vidBg.currentTime;
                 }
             }
             requestAnimationFrame(syncTime);
         };
-        requestAnimationFrame(syncTime);
+        requestAnimationFrame(syncTime); // Starts the frame-by-frame loop
     }
 
     // --- UNIVERSAL SLIDER LOGIC ---
