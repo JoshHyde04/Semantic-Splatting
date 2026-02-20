@@ -377,33 +377,46 @@
     </footer>
 
     <script>
-    // --- VIDEO SYNCHRONIZATION LOGIC ---
+// --- BULLETPROOF VIDEO SYNCHRONIZATION LOGIC ---
     const vidBg = document.getElementById('vid-bg'); // Master
     const vidFg = document.getElementById('vid-fg'); // Slave
 
     if (vidBg && vidFg) {
-        // 1. Force Slave to copy Master's play/pause state
-        vidBg.onplay = () => vidFg.play().catch(() => {});
-        vidBg.onpause = () => vidFg.pause();
+        // Start both videos
+        vidBg.play().catch(() => {});
+        vidFg.play().catch(() => {});
 
-        // 2. If the Slave gets stuck buffering on a slow network, pause the Master!
-        vidFg.addEventListener('waiting', () => vidBg.pause());
-        vidFg.addEventListener('canplay', () => {
-            // Resume Master once Slave has enough data
-            if (vidBg.readyState >= 3) vidBg.play().catch(() => {}); 
-        });
+        const manageSync = () => {
+            // 1. SELF-HEALING: If both videos have enough data to play, ensure they are playing!
+            // readyState >= 3 means "I have enough data to play the current frame and the next one"
+            if (vidBg.readyState >= 3 && vidFg.readyState >= 3) {
+                if (vidBg.paused) vidBg.play().catch(() => {});
+                if (vidFg.paused) vidFg.play().catch(() => {});
+            }
 
-        // 3. Keep them locked together down to the millisecond
-        const syncTime = () => {
-            // Only sync if Master is actually playing and Slave has loaded its metadata
+            // 2. BUFFER LOCK: If the Slave needs to buffer, force the Master to pause and wait.
+            if (vidFg.readyState < 3 && !vidBg.paused) {
+                vidBg.pause();
+            }
+
+            // 3. BUFFER LOCK: If the Master needs to buffer, force the Slave to pause and wait.
+            if (vidBg.readyState < 3 && !vidFg.paused) {
+                vidFg.pause();
+            }
+
+            // 4. TIME SYNC: If they are playing, keep them locked within 0.1 seconds of each other.
             if (!vidBg.paused && vidFg.readyState >= 1) {
                 if (Math.abs(vidBg.currentTime - vidFg.currentTime) > 0.1) {
                     vidFg.currentTime = vidBg.currentTime;
                 }
             }
-            requestAnimationFrame(syncTime);
+
+            // Check again on the next monitor frame (~60 times a second)
+            requestAnimationFrame(manageSync);
         };
-        requestAnimationFrame(syncTime); // Starts the frame-by-frame loop
+        
+        // Start the loop
+        requestAnimationFrame(manageSync);
     }
 
     // --- UNIVERSAL SLIDER LOGIC ---
