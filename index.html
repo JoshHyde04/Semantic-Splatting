@@ -268,40 +268,42 @@
     </footer>
 
     <script>
-// --- VIDEO SYNCHRONIZATION LOGIC ---
-    const vidBg = document.getElementById('vid-bg');
-    const vidFg = document.getElementById('vid-fg');
+// --- VIDEO SYNCHRONIZATION LOGIC (SLOW NETWORK SAFE) ---
+    const vidBg = document.getElementById('vid-bg'); // Master Video
+    const vidFg = document.getElementById('vid-fg'); // Slave Video
 
     if (vidBg && vidFg) {
-        let loaded = 0;
+        // 1. If the Master plays/pauses, force the Slave to match
+        vidBg.addEventListener('play', () => {
+            if (vidFg.readyState >= 3) vidFg.play().catch(() => {});
+        });
+        vidBg.addEventListener('pause', () => vidFg.pause());
 
-        // Only play when BOTH videos are ready to prevent drift
-        const checkReady = () => {
-            loaded++;
-            if (loaded === 2) {
-                vidBg.play();
-                vidFg.play();
+        // 2. BUFFER LOCK: If EITHER video stops to buffer, pause the other!
+        vidBg.addEventListener('waiting', () => vidFg.pause());
+        vidFg.addEventListener('waiting', () => vidBg.pause());
+
+        // 3. RESUME: When a video has buffered enough to continue, check if both are ready
+        const tryResume = () => {
+            if (vidBg.readyState >= 3 && vidFg.readyState >= 3) {
+                vidBg.play().catch(() => {});
             }
         };
+        vidBg.addEventListener('canplay', tryResume);
+        vidFg.addEventListener('canplay', tryResume);
 
-        vidBg.addEventListener('canplay', checkReady);
-        vidFg.addEventListener('canplay', checkReady);
-
-        // Lock their playback states
-        vidBg.addEventListener('play', () => vidFg.play());
-        vidBg.addEventListener('pause', () => vidFg.pause());
-        
-        // Lock them during loops or seeking
-        vidBg.addEventListener('seeking', () => { vidFg.currentTime = vidBg.currentTime; });
-
-        // Fallback sync check
-        setInterval(() => {
-            if (vidBg.readyState >= 3 && vidFg.readyState >= 3) {
+        // 4. AGGRESSIVE TIME SYNC
+        // requestAnimationFrame is much more accurate than setInterval
+        const syncTime = () => {
+            // If they drift by more than 0.1 seconds, snap the Slave to the Master
+            if (!vidBg.paused && !vidFg.paused) {
                 if (Math.abs(vidBg.currentTime - vidFg.currentTime) > 0.1) {
                     vidFg.currentTime = vidBg.currentTime;
                 }
             }
-        }, 500);
+            requestAnimationFrame(syncTime);
+        };
+        requestAnimationFrame(syncTime);
     }
 
     // --- UNIVERSAL SLIDER LOGIC ---
