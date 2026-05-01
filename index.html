@@ -340,37 +340,6 @@
         </div>
     </section>
 
-    <!-- <section class="content-section">
-        <div class="text-box">
-            <h2>Methodology</h2>
-            <p>
-                To bridge the gap between 2D foundation models and 3D scene representations, we developed a pipeline that extracts dense semantic features and projects them into explicit radiance fields.
-            </p>
-            
-            <div class="pipeline-container">
-                <div class="pipeline-step">
-                    <h3>1. Multi-View Imagery</h3>
-                    <p>Sourcing high-resolution underwater photogrammetry.</p>
-                </div>
-                <div class="pipeline-arrow">&#8594;</div>
-                <div class="pipeline-step">
-                    <h3>2. DINOv3 Extraction</h3>
-                    <p>Overlapping sliding-window extraction to prevent seam artifacts.</p>
-                </div>
-                <div class="pipeline-arrow">&#8594;</div>
-                <div class="pipeline-step">
-                    <h3>3. Feature Compression</h3>
-                    <p>Reducing massive embeddings for memory-efficient processing.</p>
-                </div>
-                <div class="pipeline-arrow">&#8594;</div>
-                <div class="pipeline-step">
-                    <h3>4. Semantic 3DGS</h3>
-                    <p>Optimizing Gaussians with a combined color and semantic loss.</p>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
     <section class="slider-section">
         <div class="slider-labels">
             <span>Semantic Features</span>
@@ -378,15 +347,25 @@
         </div>
         
         <div class="slider-container">
-            <img src="regular_leveled-imag.jpeg" class="slider-bg-media" alt="Standard RGB View" draggable="false">
+            <img src="regular_leveled-imag.jpeg" class="slider-bg-media" alt="Standard RGB View">
             <div class="slider-fg-container">
-                <img src="semantic_leveled-image.jpeg" class="slider-fg-media" alt="Semantic Features View" draggable="false">
+                <img src="semantic_leveled-image.jpeg" class="slider-fg-media" alt="Semantic Features View">
             </div>
 
             <div class="slider-handle"></div>
         </div>
         
         <p class="slider-caption">A static view of the 3D models showing consistent semantic embeddings across complex geometry.</p>
+    </section>
+
+    <section class="content-section">
+        <div class="text-box">
+            <h2>Methodology</h2>
+            <p>
+                Dense semantic features are extracted from survey imagery using DINOv3, compressed via PCA, and projected into an existing 3D Gaussian Splatting model through an occlusion-aware, confidence-weighted aggregation pipeline.
+            </p>
+            <img src="Sem Splat Pipeline.webp" alt="Full pipeline overview: from multi-view imagery through DINOv3 feature extraction, PCA compression, and 3D projection to produce dual-mode semantic and visual outputs." style="width: 100%; border-radius: 12px; margin-top: 10px;">
+        </div>
     </section>
 
     <section class="content-section">
@@ -409,7 +388,7 @@
             </p>
             <div class="bibtex-box">@article{hyde2026semanticsplatting,
   title={3D Semantic Splatting: Fusing DINOv3 features with Gaussian Splatting for Coral Reef Monitoring},
-  author={Hyde, Joshua and Clark, Jeff and Jones, Jess},
+  author={Hyde, Joshua and Clark, Jeff and Jones, Rob},
   journal={University of Bristol Student Research Project},
   year={2026}
 }</div>
@@ -496,7 +475,6 @@
         }
 
         slider.addEventListener('mousedown', (e) => {
-            e.preventDefault();
             isDragging = true;
             document.body.style.userSelect = 'none';
             updateSlider(e.clientX);
@@ -535,4 +513,4 @@
     });
     </script>
 </body>
-</html
+</html>
